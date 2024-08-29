@@ -1,0 +1,7 @@
+print(10 / 2)
+type(10 / 2)
+print(10 / 3)
+print(10 // 2)
+type(10 // 3)
+print(10 // 3.3)
+type(10 // 3.3)

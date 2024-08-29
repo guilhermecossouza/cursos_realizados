@@ -1,0 +1,465 @@
+SEÇÃO 2: O Docker
+    7.0 -> O que é Docker
+        O que é docker:
+            É uma plataforma que foi desenvolvida para você:
+                .Construir
+                .Rodar
+                .principalmente transferir seu ambiente de teste para produção
+
+        Vantagens:
+            Não importa o S.O da sua máquina ou do servidor que seu container está aplicado.
+
+    8 -> Diferenças entre VM's e Containers
+        Container vs virtualização
+            .Nos containers você roda cada aplicação isoladamente.
+            .Gasta muito mesnos recurso
+            .velocidade da aplicação
+
+    11 -> Testando o Docker
+        Ver a versão do docker
+            docker version
+
+    12 -> Como funciona o Docker
+        1° criar uma arquivo Dockerfile
+            Dockerfile:
+                Ele é responsável por tirar essa aplicação e criar uam imagem do seu app e essa imagem
+                é diacordo com as configurações passadas no arquivo Dockerfile.              
+                
+            Dockerfile:
+                Comandos:
+                    FROM -> identifica qual vai ser a palataforma e S.O
+                    COPY -> Vai fazer uma cópia dos aruivos para a imagem
+                    WORKDIR -> Vai manter um direório como padrão para
+                    CMD -> executa o coamndo para rodar a aplicação    
+            
+            IMAGEM:
+                    Dentro dessa imagem gerada está um pedaço da S.O
+                    Ambiente já instalado exe: (node.js)
+                    Vai estar os arquivos da sua app
+                    Resumindo tudo que sua app precisa para rodar vai estar dentro da imagem.
+
+            Container:
+                O container é uma processo e a sua imagem está dentro dele, após o container criado ele pode ser levado ao servidor
+
+    13 -> O que é o Docker Hub
+        Docker hup    
+            É um repositório para imagens docker, como por exemplo o git hub.
+            Pode ficar entre sua máquina e o servidor de produção
+                app -> docker hub -> produção
+
+    16 -> Criando a minha primeira imagem
+        Docherfile:
+            É uma arquivo de configuração
+        1° criar uma arquivo Dockerfile
+            Dockerfile:
+                Comandos:
+                    FROM -> identifica qual vai ser a palataforma e S.O
+                    COPY -> Vai fazer uma cópia dos aruivos para a imagem
+                    WORKDIR -> Vai manter um direório como padrão para
+                    CMD -> executa o coamndo para rodar a aplicação
+
+        Comandos
+            verifica a versão do docker
+                docker version
+            criar a imagem
+                docker build -t (-t -> para dar uma identificação para aimagem)
+            para ver a imagem criada
+                docker images
+                
+            
+
+    17. Rodando a aplicação dentro do Container
+        comandos
+            rodar a imagem criada
+                docker run <nome da imagem>
+                Após esse comando um container será criado.
+                    
+            Listar os containers
+                docker ps -a
+
+            baixar uma imagem docker 
+                docker pull <nome imagem>
+
+            Para rodar em modo interativo, ou seja, após parar ele vai excluir a imagem
+                docker run -it <nome imagem>
+
+SEÇÃO 3: Linux
+    Essa seção foi estusada em uma arquivo separado chamado de secao03-linux.txt
+
+SEÇÃO 4: Criando imagens docker
+    35 - O que são Imagens e Containers
+        Imagem:
+            Ela possiui um sistema operacional dentro dela exe Lunux e outras:
+            Ela também possui as bibliotecas necessárias para rodar seu projeto exe Node.js, Python e etc..: 
+            Ela vai conter os seus arquivos do app
+            AS variáveis de ambientes.
+
+            OBS: A imagem vai conter tudo que sua aplicação precisa para rodar, separadamente do seu S.O
+
+        Containers:
+            Ele é um ambiente isolado, como se fosse uma virtualenv
+            Ele pode ser iniciado (start) ou parado (stop) ou atualizado.
+            Ele é uma processo que roda dentro de uma máquina.
+
+            app -> imagem          -> container
+                   (arq Dockerfile)   (pegar a imagem)
+                                      (carrgar a imagem)  
+                                      (roda o seu app)
+
+    36. A Aplicação:
+        Nessa aula baiamos uma projeto pronto para testarmos no curso
+
+    37. Instruções no Dockerfile
+        Criando um arquivo Dockerfile no se projeto, nesse arquivo vai conter as variáveis:
+            FROM:
+                Ele á a imagem, qual a imagem que ele vai carregar exe: linux, Ububtu, Alpine.
+            WORKDIR:
+                É aonde você vai informar em qual diretório ele vai executar os comandos
+            COPY / ADD:
+                Esse doid servem para copiar ou adicionar todos os aruivos que fazem parte do seu app para a imagem
+            RUN:
+                Rodar a aplicação, ou seja, colocar a aplicação em funcionamento
+            ENV:
+                São as configurações do ambiente, o que vai precisar dentro do seu ambiente para rodar o aap
+            EXPOSE:
+                Ele é responsavel por apontar a porta em que seu app vai rodar
+            USER:
+                Qual o usuário responsável por rodar essa aplicação
+            CMD:
+                Rodar comandos
+            ENTRYPOINT:
+                Rodar comandos
+
+    38. Escolhendo a imagem
+        FROM:
+            FROM node:12-alpine -> quer dizer que ele vai usar essa imagem para criar o S.O com o nodeje já instalado e suas dependências.
+        Comando para criar uma imagem apartir da imagem escolhida e informada no FROM
+            docker build -t <nome_imagem> .   
+            OBS:
+                Este comando está rodando dentro do diretório do projeto               
+
+                -t ->
+                .  -> para gerar a imagem buscando os arquivos dentro desse diretório
+
+        Comando para gerar um container
+            docker run -it <nome_imagem> sh
+                -it -> rodar em modo interativo
+                sh  -> para rodar no terminal
+
+    39. Copiando arquivos na imagem
+        WORKDIR / COPY / ADD
+        
+        COPY:                       
+            server para copiar os arquivos.
+            OBS: pode ser passado de algumas formas
+            para um arquivo
+                COPY <nome_arquivo.extencao> 
+            para dois ou mais
+                COPY <nome_arquivo.extencao> <nome_arquivo.extencao>
+            para copiar copiar para outro local
+                COPY source dest 
+                COPY <nome_arquivo.extencao> /diretório do app na imagem
+            para copiar todos os arquivos com uma expecífica exrenção
+                COPY *.json /app
+                OBS: todos arquivos json vam ser vopiados par ao dirtetório app
+            para copiar todos os arquivos para um diretório
+                COPY . /app
+                obs:
+                    Para usar dessa forma você tem que informar o WORKDIR
+        WORKDIR:
+            É aonde você vai informar em qual diretório ele vai executar os comandos
+            WORKDIR /app    
+
+        OBS:
+            Caso informe o WORKDIR, não precisará informar os diretórios para o COPY
+                COPY . .
+            ou seja:
+                Ele vai copiar os arquivos do diretório /app para o diretório dentro da imagem /app.
+                Ele vai compiar tudo inclusive as subpastas.
+        ADD:
+            Para arquivos externos exemplos sites ou baixar arquivos de API, usa ele
+            ADD www.google.com/arquivoteste  
+            Para arquivos compactados também os .zip ou .tz
+            O ADD além dele ler esse arquivo ele descompacta ele
+
+    41. Configurando Variáveis
+        RUN:
+            Serve para instalar as depedências para rodar o projeto exemplo: Python
+            RUN apk add --no-cache python3 g++ make
+            RUN yarn install --production
+
+    41. Configurando Variáveis
+        Caso precise informar exemplo se fornt-end
+        ENV: API_URL=api_url/font/projeto
+    
+    42. Utilizando o EXPOSE
+        EXPOSE:
+            http://localhost:<porta>, ou seja o expose fica escutando a porta indicada     
+
+    43. Utilizando o CMD
+        Logos após criar o container precisamos que ele rode para isso o CMD 
+        O cmd é executado logo a após a imagem está rodando
+
+    44. Adicionando um usuário na imagem
+        USER:
+            logo após o WORKDIR adicione o usuário
+            RUN addgroup <nome_grupo> && adduser -s -g <usuario> dev
+            depois é só adicionar o usuário
+            USER <nome_usuario>
+
+    45. Rodando a sua aplicação
+        logo após as configurações no Dockerfile
+            construa a imagem
+                docker build -t <nome_imagem> .
+            crie o container
+                docker run -d -p 3000:3000 <nome_imagem>
+
+    46. Melhorando a performance
+        A oridem com que você configura o Docker file interfere na performace dele ao criar a imagem
+        para isso fpi atribuido mais um COPY anstes do RUN para fazer a leitura do package.json a onde conteêm todas as minha alterações de pacotes
+        fazendo isso ele usará as ingormações pelo cache
+            FROM node:12-alpine
+            WORKDIR /app
+            COPY package.json .
+            RUN apk add --no-cache python3 g++ make
+            RUN yarn install --production
+            COPY . .
+            RUN ["node", "src/index.js"]
+            EXPOSE 3000
+
+    47. Adicionando tags a imagens
+        usando tags você consegui controlar verções da sua imagem
+        comando:
+            docker build -t <nome_imagem>:<nome_tag> .
+            -t -> tags
+            pode fazer assim também:
+                docker image tag app:latest app:v1.0.0
+
+            Para remover uma imagens
+                docker image remove <nome_imagem>:<tag> ou <image_id>
+                OBS: lembrando que pode aver imagens com o mesmo ID   
+
+    48. Compartilhando imagens [ docker hub ]
+        comandos:
+            docker images -> verificar versões mais atualizadas
+        obs: criar uma imagem com a tag do mesmo nome do repositório
+            docker image tab <nome_imagem>:<tag> <nome_imagem>:<nome_repositorio>
+            ou
+            docker image tab <image_id> <nome_imagem>:<nome_repositorio>
+        faze o upload da imagem
+            comandos
+                docker login
+                obs: vai solicitar login e senha de acesso
+                PUSH:
+                    docker push <nome_repositorio>:<tag>
+
+    49. Salvando e carregando imagens
+        passndo as imagens para outro computador se precisar usar o docker hub
+            comandos:
+                para visualizar as opções
+                    docker image save --help
+                salvando a imagem em disco 
+                    docker image save -o <nome_imagem_extencao> <nome_imagem_origem>:<tag>
+                    exe:
+                    docker image save -o minhaImagem.tar <nome_imagem>:<tag>
+
+SEÇÃO 5: Containers
+    51. Nomeando containers
+        comandos:
+            Iniciando container
+                docker run -d <nome_imagem>:<tag>
+                -d -> rodar em background
+                    vai executar o container e libeara para uso o terminal caso precise
+            Alterando o nome do container
+                docker run -d -p 3000:3000 --name manga
+
+    52. Verificando o log de eventos
+        comandos:
+            Para verificar as opções
+                docker logs --help
+            para ver os logs
+                docker logs
+    
+    53. Publicando portas de acesso
+        redicionamento de postas da porta do container para a porta do pc
+            docker run -d -p <host_da_maquina>:<porta_container>
+
+    54. Executando comandos em containers
+        executar comando dentro do seu container
+            docker exec <nome_container> ou <docker_id>
+
+    55. Iniciando e parando containers
+        Para parar o container
+            docker stop <nome_container> ou <docker_id>
+        para inciar o container
+            docker start <nome_container> ou <docker_id>
+
+    56. Removendo containers
+        para saber as opções
+            docker rm --help
+        docker rm -f <nome_container> ou <docker_id>
+
+    57. Volumes persistentes
+        criando o volume
+            docker volume create <nome_volume>
+        verificando as informações do volume
+            docker volume inspect <nome_volume>
+        associar o volume ao meu container
+            docker run -d - p 3000:3000 --mame maca -v <nome_volume>:/<diretório_imagem>/<nome_diretorio> <nome_imagem>
+
+        para rodar o container com volume:
+            docker run -v <origem>:<destino> <nome_imagem>
+
+
+    58. Copiando arquivos do host para o container
+        comandos
+            docker cp <nome_container> ou <id_container>/<diretório_container>/<nome_arquivo_extenca> <onde_vc_quer_savar>
+
+
+SEÇÃO 6: Docker compose
+    60. Instalando o Docker Compose
+        verificando se o docker-compose está instalado
+            docker-compose --version
+
+    61. Limpando a maquina local
+        limpado todas as imagens
+            docker rmi -f $(doker images -q)
+        limpando todas os container
+            doker rm -f $(doker rm -aq)
+            
+    62. Download do projeto Netflix
+        Esse projeto é dividido em 3 partes:
+            banco de dados -> MongoDb
+            backend
+            front-end
+        
+        Será criado um container para cada um dessas partes.
+
+    63. Rodando o projeto Netflix
+        No arquivo docker-compose.yml contem todas as instruções sobre os containers que vam subir
+        comandos:
+            Esse comando vai construir o docker
+            docker-compose up
+
+    64. A linguagem YAML
+        extenção .yml:
+            Esse arquivo com essa extenção usa a linguagem de programação YAML
+        Regras básicas:
+            Os arquivos com a extenção yaml usam com linguagem de programação YAML
+            é difinida sendo como Data Serialization, ela é uma linguem usada para escrever arquivos de 
+            configuração 
+        é uma linguagem de forte identação
+
+    65. Criando um docker compose file
+        comandos:
+            version: "3.8" é a versóo do docker-compose file
+            services: serviçoo
+                frontend: nome dos containers
+                    depends_on: -> fala que esse container depende de outro container e tem que ficar com primeira lina do container
+                        - backend
+
+                    build: ./frontend -> irá bildar o arquivo Dockerfile que está dentro do diretório    
+                    ports:
+                        - 3000:3000 -> a porta que irá rodar o seu projeto, ou seja quando ele dodar o doker run vao setar o <host>:<porta_docker>
+                    
+
+                backend: nome dos containers
+                    depends_on: -> fala que esse container depende de outro container e tem que ficar com primeira lina do container
+                        - db
+                    build: ./backend -> irá bildar o arquivo Dockerfile que está dentro do diretório   
+                    ports:
+                        - 3001:3001 -> a porta que irá rodar o seu projeto, ou seja quando ele dodar o doker run vao setar o <host>:<porta_docker>                    
+
+                    OBS: O comando a baixo serve para conectar o meu backend ao meu banco de dados
+                    environment: 
+                        DB_URL: mongodb://db/vidly
+                    command: ./docker-entrypoint.sh
+
+                db: nome dos containers
+                    imagem: mongo:4.0-xenial define a imagem que irá baixar docker hub
+                    ports:
+                        OBS: sempre verificar a porta na documentação do banco de dados que vai usar
+                        - 27017:27017
+                    volumes:
+                        - vidly:/data/db
+
+            volumes:
+                vidly:
+    
+    66. Rodando e parando o docker compose
+        comandos:
+            verificar as opções no docker-compose
+                docker-compose --help
+            
+            Se as imagens não tiverem sido construidas ele vai construir
+                docker-compose up 
+
+            Obrigatoriamente ele vai construir as imagens e vai iniciar o container
+                docker-compose up --build
+
+            Para rodar em background adicionar o -d
+                docker-compose  up -d  
+
+            Para vizualizar os containers
+                docker-compose ps
+
+            Para parar os containers
+                docker-compose down 
+
+    67. A rede do Docker
+        Esse containers precisam se comunicar e eles fazem isso através de rede com ips criados pelo docker
+            frontend
+                ip: 172.19.0.4
+            backend
+                ip: 172.19.0.3
+            db
+                ip: 203.112.194.232
+
+            Comandos para verificar o ip dos containers
+                acessando o primeiro container 
+                    doker exe -it -u root <id_container> sh
+                
+                ifconfig -> vai mostrar a lista de ips
+            
+        O docker por si só tem construido um sistema chamado DNS Resower
+        Toda vex que um container é criado ele atualiza o DNS Resower
+            <nome_container> -> ip xxx.xxx.xx.x
+
+    68. Docker Compose logs
+        para verificar opções
+            docker-compose logs --help
+        Para verificar logs
+            docker-compose logs   
+
+
+
+        
+            
+
+                
+
+
+
+
+            
+
+
+
+        
+
+
+
+
+    
+        
+
+
+
+
+
+
+
+
+
+
+        
