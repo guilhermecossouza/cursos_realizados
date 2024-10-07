@@ -1,0 +1,1 @@
+console.log("teste".repeat(5))
