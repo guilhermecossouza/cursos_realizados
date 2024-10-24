@@ -1,0 +1,25 @@
+Para rodar o arquivo TypeScript
+    - node <nomedoarquivo.ts>
+Para rodar o arquivo Javascript
+    - node <nomedoarquivo.js>
+Para compilar o arquivo
+    - tsc <nomedoarquivo.ts> -> irá criar um arquivo java TypeScript
+    OBS: Cria o arquivo talvez em versões anteriores.
+Para compilar o arquivo TypeScript e gerar um arquivo Javascript mais recente.
+    '--target' option must be: 'es5', 'es6', 'es2015', 'es2016', 'es2017', 
+    'es2018', 'es2019', 'es2020', 'es2021', 'es2022', 'es2023', 'esnext'.
+    - tsc <nomedo arquivo.ts> --target "<versão Javascript>"
+    Caso não saiba a versão mais recente no momento 
+        - tsc <nomedo arquivo.ts> --target "ESNEXT"
+Para ver os comandos a executados no termianl
+    -tsc
+    Depois do arquivo de configuração criado, alterer as configurações
+    - "target": "ESNext" -> a versão do java script a ser compilado
+    "rootDirs": ["./source"] -> pasta aonde os arquivos ts seram criados pelo programador   
+    "outDir": "./build" ->  caminho onde os arquivos Javascript ficarma após serem compilados
+    - Depois desas configurações para compilar agora é:
+    - tsc
+Para ver os comandos logo depois de criar o arquivo configuração
+    - tsc -h ou --help
+Para que não fique tendo que compilar toda vez o TypeScript use o comandos
+    -tsc --watch ou -w
