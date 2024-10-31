@@ -27,21 +27,24 @@ type EnderecoEmpresa = {
 
 type EnderecoFinal<T> = T extends {endereco: string} ? EnderecoPessoa : EnderecoEmpresa;
 
-const enderecoPessoa: EnderecoFinal<Pessoa> = {
-    enderecoSecundario: "rua",
-    cidade: "são Paulo",
-    pais: "Brasil"
-}
+// const enderecoPessoa: EnderecoFinal<EnderecoPessoa> = {
+//     enderecoSecundario: "rua",
+//     cidade: "Belo Horizonte",
+//     pais: "Brasil"
+// }
 
-const enderecoEmpresa: EnderecoFinal<Empresa> = {
+const enderecoEmpresa: EnderecoFinal<EnderecoEmpresa> = {
     localizacao: "rua"
 }
+
+console.log(enderecoEmpresa);
+
 
 
 // ==> Exemplo 02 - Conditional Types
 
 type FormatoArquivos = "png" | "jpg" | "gif" | "svg" | "mp4" | "mp3";
-type FiltarArquivosAudios<T> = T extends "mp4" | "mp3" ? T : never
+type FiltarArquivosAudios<T extends FormatoArquivos> = T extends "mp4" | "mp3" ? T : never
 type FiltrarArquivoImagem<T> = T extends "png" | "jpg" | "gif" | "svg" ? T : never
 
 type ArquivoAudio = FiltarArquivosAudios<FormatoArquivos>;
