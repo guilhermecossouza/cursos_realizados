@@ -2,6 +2,8 @@
  * doc referência: https://www.typescriptlang.org/docs/handbook/basic-types.html#array
  */
 
+export { }
+
 // ==> Exemplo 01 - Uso de Colchetes:
 let frutas:string[] = ["Macã","Melão","Melancia"];
 console.log(frutas[0]);
